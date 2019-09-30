@@ -13,13 +13,39 @@ $ sh tidelift-all.sh my-repo my-other-repo
 Or if you want to apply it to many repos:
 
 ```bash
-$ curl "https://api.github.com/search/repositories?q=org:adobe" | jq .items[].name | xargs sh tidelift-all.sh
+$ curl "https://api.github.com/search/repositories?q=org:adobe" | jq .items[].name | xargs sh tidelift-all.sh -o adobe
+```
+
+## Advanced Usage
+
+### `-o` `--org` Select a different GitHub username or org
+
+The default value is `adobe`, but you can override this with your user name by running
+
+```bash
+$ sh tidelift-all.sh -o trieloff <repo-name>
+```
+
+### `-f` `--file` Add a different file
+
+The default value is `.tidelift.yml`, but you can override this with any other file name by running
+
+```bash
+$ sh tidelift-all.sh -f .renovaterc.json
+```
+
+### `-m` `--message` Change the commit message
+
+The default value is `chore(tidelift): adding list of forbidden licenses`, but you can override this with a more accurate commit message by running
+
+```bash
+$ sh tidelift-all.sh -m "foo bar"
 ```
 
 ## Limitations
 
 - [ ] does not support patching of configs
-- [ ] `adobe` org is hardcoded
+- [x] `adobe` org is hardcoded
 - [ ] it's really just a simple script and I like it that way
 - [ ] contributions welcome
 

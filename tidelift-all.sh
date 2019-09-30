@@ -1,15 +1,51 @@
 #!/bin/bash
-echo "adding tidelift.yml"
+
+FILE=".tidelift.yml"
+MESSAGE="chore(tidelift): adding list of forbidden licenses"
+ORG="adobe"
+PARAMS=""
+while (( "$#" )); do
+  case "$1" in
+    -o|--org)
+      ORG=$2
+      shift 2
+      ;;
+    -f|--file)
+      FILE=$2
+      shift 2
+      ;;
+    -m|--message)
+      MESSAGE=$2
+      shift 2
+      ;;
+    --) # end argument parsing
+      shift
+      break
+      ;;
+    -*|--*=) # unsupported flags
+      echo "Error: Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      shift
+      ;;
+  esac
+done
+# set positional arguments in their proper place
+eval set -- "$PARAMS"
+
+echo "adding $FILE"
 for REPO in "$@"
 do
-    git clone "git@github.com:adobe/$REPO.git"
+    git clone "git@github.com:$ORG/$REPO.git"
     cd "$REPO"
-    if [ -f ".tidelift.yml" ]; then
-        echo "skipping $REPO, .tidelift.yml already exists"
+    if [ -f "$FILE" ]; then
+        echo "skipping $REPO, $FILE already exists"
     else
-        cp ../.tidelift.yml .
-        git add .tidelift.yml
-        git commit -m "chore(tidelift): adding list of forbidden licenses"
+        cp ../$FILE .
+        git add $FILE
+        git commit -m "$MESSAGE"
         git push
     fi
     cd ..
