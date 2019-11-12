@@ -42,6 +42,10 @@ The default value is `chore(tidelift): adding list of forbidden licenses`, but y
 $ sh tidelift-all.sh -m "foo bar"
 ```
 
+### `-w` `--overwrite` Overwrite files
+
+The default behavior is to skip repositories that already contain the specified file. With `-w` you can force overwriting.
+
 ## Limitations
 
 - [ ] does not support patching of configs
