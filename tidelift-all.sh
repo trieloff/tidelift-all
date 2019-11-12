@@ -1,6 +1,7 @@
 #!/bin/bash
 
 FILE=".tidelift.yml"
+FORCE="false"
 MESSAGE="chore(tidelift): adding list of forbidden licenses"
 ORG="adobe"
 PARAMS=""
@@ -17,6 +18,10 @@ while (( "$#" )); do
     -m|--message)
       MESSAGE=$2
       shift 2
+      ;;
+    -w|--overwrite)
+      FORCE="true"
+      shift
       ;;
     --) # end argument parsing
       shift
@@ -40,7 +45,7 @@ for REPO in "$@"
 do
     git clone "git@github.com:$ORG/$REPO.git"
     cd "$REPO"
-    if [ -f "$FILE" ]; then
+    if [ -f "$FILE" ] && [ "$FORCE" == "false" ] ; then
         echo "skipping $REPO, $FILE already exists"
     else
         cp ../$FILE .
